@@ -1,6 +1,9 @@
 use anchor_lang::system_program::{transfer, Transfer};
 use anchor_lang::prelude::*;
 
+mod errors;
+use errors::Errors;
+
 mod contexts;
 use contexts::*;
 
@@ -9,11 +12,13 @@ use states::*;
 
 declare_id!("33CTmeovXMHmqHb45KiaL73m4jVqVQCbzjCm27TFboZx");
 
+const OWNER: &str = "VvXCAgwD5hpAs2Mwne5zoCxjD13f1e9exvpquNtF1e6";
+
 #[program]
 pub mod escrow {
     use super::*;
 
-    const RELEASE_TIME: u32 = 604800;
+    static mut RELEASE_TIME: u32 = 604800;
 
     pub fn create_escrow(ctx: Context<CreateEscrow>, amount: u64, approver_perc_fees: u8, message: String) -> Result<()> {
         let fees: u64 = amount * (approver_perc_fees as u64) / 100;
@@ -61,10 +66,6 @@ pub mod escrow {
             });
         transfer(approver_cpi_context, fees)?;
         
-        msg!("sender pda address: {}", sender_pda.key());
-        msg!("receiver address: {}", ctx.accounts.receiver.key());
-        msg!("receiver_pda address: {0}, balance: {1}", receiver_pda.key(), receiver_pda.get_lamports());
-        
         Ok(())
     }
 
@@ -81,15 +82,6 @@ pub mod escrow {
             receiver_pda.status[escrow_i as usize] = 1;
             approver_pda.status[escrow_i as usize] = 1;
 
-            msg!("receiver_pda address: {0}, balance: {1}", receiver_pda.key(), receiver_pda.get_lamports());
-            msg!("receiver address: {}", approver_pda.receiver[escrow_i as usize].key());
-            
-            msg!("I want to send {0} lamports from {1} to {2}", receiver_pda.amount[escrow_i as usize] - fees, receiver_pda.key(), approver_pda.receiver[escrow_i as usize].key());
-
-            let (found_receiver_pda, receiver_pda_bump) = Pubkey::find_program_address(&[b"escrow_received", ctx.accounts.receiver.key().as_ref()], &ctx.program_id);
-
-            msg!("found_receiver_pda address: {0}, receiver_pda_bump: {1}", found_receiver_pda, receiver_pda_bump);
-
             receiver_pda.sub_lamports(amount_to_transfer)?;
             ctx.accounts.receiver.add_lamports(amount_to_transfer)?;
 
@@ -100,15 +92,6 @@ pub mod escrow {
             sender_pda.status[escrow_i as usize] = 2;
             receiver_pda.status[escrow_i as usize] = 2;
             approver_pda.status[escrow_i as usize] = 2;
-
-            msg!("receiver_pda address: {0}, balance: {1}", receiver_pda.key(), receiver_pda.get_lamports());
-            msg!("receiver address: {}", approver_pda.receiver[escrow_i as usize].key());
-            
-            msg!("I want to send {0} lamports from {1} to {2}", receiver_pda.amount[escrow_i as usize] - fees, receiver_pda.key(), approver_pda.receiver[escrow_i as usize].key());
-
-            let (found_receiver_pda, receiver_pda_bump) = Pubkey::find_program_address(&[b"escrow_received", ctx.accounts.receiver.key().as_ref()], &ctx.program_id);
-
-            msg!("found_receiver_pda address: {0}, receiver_pda_bump: {1}", found_receiver_pda, receiver_pda_bump);
 
             receiver_pda.sub_lamports(amount_to_transfer)?;
             ctx.accounts.sender.add_lamports(amount_to_transfer)?;
@@ -121,6 +104,44 @@ pub mod escrow {
     }
 
     pub fn release_escrow(ctx: Context<ReleaseEscrow>, escrow_i: u8) -> Result<()> {
+        let sender_pda: &mut Account<SenderAccount> = &mut ctx.accounts.sender_pda;
+        let receiver_pda: &mut Account<ReceiverAccount> = &mut ctx.accounts.receiver_pda;
+        let approver_pda: &mut Account<ApproverAccount> = &mut ctx.accounts.approver_pda;
+
+        let fees: u64 = sender_pda.amount[escrow_i as usize] * (sender_pda.approver_perc_fees[escrow_i as usize] as u64) / 100;
+        let amount_to_transfer: u64 = sender_pda.amount[escrow_i as usize] - fees;
+        
+        unsafe {
+            if ((Clock::get()?.unix_timestamp - sender_pda.timestamp[escrow_i as usize]) as u32) < RELEASE_TIME {
+                return err!(Errors::RelaseTime);
+            }
+        }
+
+        receiver_pda.sub_lamports(amount_to_transfer)?;
+        ctx.accounts.sender.add_lamports(amount_to_transfer)?;
+
+        approver_pda.sub_lamports(fees)?;
+        ctx.accounts.sender.add_lamports(fees)?;
+
         Ok(())
     }
+
+    #[access_control(check(&ctx))]
+    pub fn set_release_time(ctx: Context<OnlyOwner>, release_time: u32) -> Result<()> {
+        unsafe {
+            RELEASE_TIME = release_time;
+        }
+        Ok(())
+    }
+}
+
+fn check(ctx: &Context<OnlyOwner>) -> Result<()> {
+    // Check if signer === owner
+    require_keys_eq!(
+        ctx.accounts.signer_account.key(),
+        OWNER.parse::<Pubkey>().unwrap(),
+        Errors::NotOwner
+    );
+
+    Ok(())
 }

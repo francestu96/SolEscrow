@@ -58,8 +58,6 @@ describe("EscrowProgram", () => {
         receiverPDABalance = await provider.connection.getBalance(receiverPDA);
         approverPDABalance = await provider.connection.getBalance(approverPDA);
 
-        console.log(account.timestamp[0].toNumber())
-
         console.log("\n\t------- AFTER TX -------");
         console.log("\tWallet balance: " + format(walletBalance));
         console.log("\tSender PDA balance: " + format(senderPDABalance));
@@ -67,7 +65,46 @@ describe("EscrowProgram", () => {
         console.log("\tApprover PDA balance: " + format(approverPDABalance));
     })
 
-    it("Escrow Approve", async () => {
+    // it("Escrow Approve", async () => {
+    //     const [ senderPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
+    //         [Buffer.from("escrow_sent"), wallet.publicKey.toBuffer()],
+    //         program.programId
+    //     );
+    //     const [ receiverPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
+    //         [Buffer.from("escrow_received"), to.publicKey.toBuffer()],
+    //         program.programId
+    //     );
+    //     const [ approverPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
+    //         [Buffer.from("escrow_approved"), approver.publicKey.toBuffer()],
+    //         program.programId
+    //     );
+
+    //     await program.methods
+    //         .approveEscrow(true, 0)
+    //         .accounts({ sender: wallet.publicKey, receiver: to.publicKey, approver: approver.publicKey })
+    //         .signers([ approver ])
+    //         .rpc();
+
+    //     let walletBalance = await provider.connection.getBalance(wallet.publicKey);
+    //     let receiverBalance = await provider.connection.getBalance(to.publicKey);
+    //     let approverBalance = await provider.connection.getBalance(approver.publicKey);
+    //     let senderPDABalance = await provider.connection.getBalance(senderPDA);
+    //     let receiverPDABalance = await provider.connection.getBalance(receiverPDA);
+    //     let approverPDABalance = await provider.connection.getBalance(approverPDA);
+
+    //     console.log("\t Receiver PDA address: " + receiverPDA.toString())
+    //     console.log("\t Receiver address: " + to.publicKey)
+
+    //     console.log("\n\t------- AFTER APPROVE -------");
+    //     console.log("\tWallet balance: " + format(walletBalance));
+    //     console.log("\tSender PDA balance: " + format(senderPDABalance));
+    //     console.log("\tReceiver PDA balance: " + format(receiverPDABalance));
+    //     console.log("\tApprover PDA balance: " + format(approverPDABalance));
+    //     console.log("\n\tReceiver balance: " + format(receiverBalance));
+    //     console.log("\tApprover balance: " + format(approverBalance));
+    // })
+
+    it("Release funds", async () => {
         const [ senderPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
             [Buffer.from("escrow_sent"), wallet.publicKey.toBuffer()],
             program.programId
@@ -82,27 +119,20 @@ describe("EscrowProgram", () => {
         );
 
         await program.methods
-            .approveEscrow(true, 0)
+            .releaseEscrow(0)
             .accounts({ sender: wallet.publicKey, receiver: to.publicKey, approver: approver.publicKey })
-            .signers([ approver ])
+            .signers([ wallet ])
             .rpc();
 
         let walletBalance = await provider.connection.getBalance(wallet.publicKey);
-        let receiverBalance = await provider.connection.getBalance(to.publicKey);
-        let approverBalance = await provider.connection.getBalance(approver.publicKey);
         let senderPDABalance = await provider.connection.getBalance(senderPDA);
         let receiverPDABalance = await provider.connection.getBalance(receiverPDA);
         let approverPDABalance = await provider.connection.getBalance(approverPDA);
 
-        console.log("\t Receiver PDA address: " + receiverPDA.toString())
-        console.log("\t Receiver address: " + to.publicKey)
-
-        console.log("\n\t------- AFTER APPROVE -------");
+        console.log("\n\t------- AFTER RELEASE -------");
         console.log("\tWallet balance: " + format(walletBalance));
         console.log("\tSender PDA balance: " + format(senderPDABalance));
         console.log("\tReceiver PDA balance: " + format(receiverPDABalance));
         console.log("\tApprover PDA balance: " + format(approverPDABalance));
-        console.log("\n\tReceiver balance: " + format(receiverBalance));
-        console.log("\tApprover balance: " + format(approverBalance));
     })
 })
