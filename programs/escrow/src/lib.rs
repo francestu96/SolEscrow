@@ -13,35 +13,37 @@ declare_id!("33CTmeovXMHmqHb45KiaL73m4jVqVQCbzjCm27TFboZx");
 pub mod escrow {
     use super::*;
 
-    pub fn create_escrow(ctx: Context<CreateEscrow>, amount: u64, approver_perc_fees: u8, message: String, timestamp: u32) -> Result<()> {
+    const RELEASE_TIME: u32 = 604800;
+
+    pub fn create_escrow(ctx: Context<CreateEscrow>, amount: u64, approver_perc_fees: u8, message: String) -> Result<()> {
         let fees: u64 = amount * (approver_perc_fees as u64) / 100;
 
         let sender_pda: &mut Account<SenderAccount> = &mut ctx.accounts.sender_pda;
-        sender_pda.status = 0;
-        sender_pda.receiver = ctx.accounts.receiver.key();
-        sender_pda.approver = ctx.accounts.approver.key();
-        sender_pda.amount = amount;
-        sender_pda.approver_perc_fees = approver_perc_fees;
-        sender_pda.message = message.clone();
-        sender_pda.timestamp = timestamp;
+        sender_pda.status.push(0);
+        sender_pda.receiver.push(ctx.accounts.receiver.key());
+        sender_pda.approver.push(ctx.accounts.approver.key());
+        sender_pda.amount.push(amount);
+        sender_pda.approver_perc_fees.push(approver_perc_fees);
+        sender_pda.message.push(message.clone());
+        sender_pda.timestamp.push(Clock::get()?.unix_timestamp);
 
         let receiver_pda: &mut Account<ReceiverAccount> = &mut ctx.accounts.receiver_pda;
-        receiver_pda.status = 0;
-        receiver_pda.sender = ctx.accounts.sender.key();
-        receiver_pda.approver = ctx.accounts.approver.key();
-        receiver_pda.amount = amount;
-        receiver_pda.approver_perc_fees = approver_perc_fees;
-        receiver_pda.message = message.clone();
-        receiver_pda.timestamp = timestamp;
+        receiver_pda.status.push(0);
+        receiver_pda.sender.push(ctx.accounts.sender.key());
+        receiver_pda.approver.push(ctx.accounts.approver.key());
+        receiver_pda.amount.push(amount);
+        receiver_pda.approver_perc_fees.push(approver_perc_fees);
+        receiver_pda.message.push(message.clone());
+        receiver_pda.timestamp.push(Clock::get()?.unix_timestamp);
 
         let approver_pda: &mut Account<ApproverAccount> = &mut ctx.accounts.approver_pda;
-        approver_pda.status = 0;
-        approver_pda.sender = ctx.accounts.sender.key();
-        approver_pda.receiver = ctx.accounts.receiver.key();
-        approver_pda.amount = amount;
-        approver_pda.approver_perc_fees = approver_perc_fees;
-        approver_pda.message = message.clone();
-        approver_pda.timestamp = timestamp;
+        approver_pda.status.push(0);
+        approver_pda.sender.push(ctx.accounts.sender.key());
+        approver_pda.receiver.push(ctx.accounts.receiver.key());
+        approver_pda.amount.push(amount);
+        approver_pda.approver_perc_fees.push(approver_perc_fees);
+        approver_pda.message.push(message.clone());
+        approver_pda.timestamp.push(Clock::get()?.unix_timestamp);
 
         let escrow_cpi_context: CpiContext<Transfer> = CpiContext::new(
             ctx.accounts.system_program.to_account_info(), 
@@ -59,29 +61,30 @@ pub mod escrow {
             });
         transfer(approver_cpi_context, fees)?;
         
-        msg!("receiver address: {}", approver_pda.receiver.key());
+        msg!("sender pda address: {}", sender_pda.key());
+        msg!("receiver address: {}", ctx.accounts.receiver.key());
         msg!("receiver_pda address: {0}, balance: {1}", receiver_pda.key(), receiver_pda.get_lamports());
         
         Ok(())
     }
 
-    pub fn approve_escrow(ctx: Context<ApproveEscrow>, approve: bool) -> Result<()> {
+    pub fn approve_escrow(ctx: Context<ApproveEscrow>, approve: bool, escrow_i: u8) -> Result<()> {
         let sender_pda: &mut Account<SenderAccount> = &mut ctx.accounts.sender_pda;
         let receiver_pda: &mut Account<ReceiverAccount> = &mut ctx.accounts.receiver_pda;
         let approver_pda: &mut Account<ApproverAccount> = &mut ctx.accounts.approver_pda;
 
-        let fees: u64 = sender_pda.amount * (sender_pda.approver_perc_fees as u64) / 100;
-        let amount_to_transfer: u64 = sender_pda.amount - fees;
+        let fees: u64 = sender_pda.amount[escrow_i as usize] * (sender_pda.approver_perc_fees[escrow_i as usize] as u64) / 100;
+        let amount_to_transfer: u64 = sender_pda.amount[escrow_i as usize] - fees;
         
         if approve {
-            sender_pda.status = 1;
-            receiver_pda.status = 1;
-            approver_pda.status = 1;
+            sender_pda.status[escrow_i as usize] = 1;
+            receiver_pda.status[escrow_i as usize] = 1;
+            approver_pda.status[escrow_i as usize] = 1;
 
             msg!("receiver_pda address: {0}, balance: {1}", receiver_pda.key(), receiver_pda.get_lamports());
-            msg!("receiver address: {}", approver_pda.receiver.key());
+            msg!("receiver address: {}", approver_pda.receiver[escrow_i as usize].key());
             
-            msg!("I want to send {0} lamports from {1} to {2}", receiver_pda.amount - fees, receiver_pda.key(), approver_pda.receiver.key());
+            msg!("I want to send {0} lamports from {1} to {2}", receiver_pda.amount[escrow_i as usize] - fees, receiver_pda.key(), approver_pda.receiver[escrow_i as usize].key());
 
             let (found_receiver_pda, receiver_pda_bump) = Pubkey::find_program_address(&[b"escrow_received", ctx.accounts.receiver.key().as_ref()], &ctx.program_id);
 
@@ -93,7 +96,31 @@ pub mod escrow {
             approver_pda.sub_lamports(fees)?;
             ctx.accounts.approver.add_lamports(fees)?;
         }
+        else {
+            sender_pda.status[escrow_i as usize] = 2;
+            receiver_pda.status[escrow_i as usize] = 2;
+            approver_pda.status[escrow_i as usize] = 2;
 
+            msg!("receiver_pda address: {0}, balance: {1}", receiver_pda.key(), receiver_pda.get_lamports());
+            msg!("receiver address: {}", approver_pda.receiver[escrow_i as usize].key());
+            
+            msg!("I want to send {0} lamports from {1} to {2}", receiver_pda.amount[escrow_i as usize] - fees, receiver_pda.key(), approver_pda.receiver[escrow_i as usize].key());
+
+            let (found_receiver_pda, receiver_pda_bump) = Pubkey::find_program_address(&[b"escrow_received", ctx.accounts.receiver.key().as_ref()], &ctx.program_id);
+
+            msg!("found_receiver_pda address: {0}, receiver_pda_bump: {1}", found_receiver_pda, receiver_pda_bump);
+
+            receiver_pda.sub_lamports(amount_to_transfer)?;
+            ctx.accounts.sender.add_lamports(amount_to_transfer)?;
+
+            approver_pda.sub_lamports(fees)?;
+            ctx.accounts.approver.add_lamports(fees)?;
+        }
+
+        Ok(())
+    }
+
+    pub fn release_escrow(ctx: Context<ReleaseEscrow>, escrow_i: u8) -> Result<()> {
         Ok(())
     }
 }

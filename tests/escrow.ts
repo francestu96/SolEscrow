@@ -45,18 +45,20 @@ describe("EscrowProgram", () => {
         console.log("\tApprover PDA balance: " + format(approverPDABalance));
 
         await program.methods
-            .createEscrow(new anchor.BN(10**9), 10, "Initial escrow message", 10)
+            .createEscrow(new anchor.BN(10**9), 10, "Initial escrow message")
             .accounts({ sender: wallet.publicKey, receiver: to.publicKey, approver: approver.publicKey })
             .signers([ wallet ])
             .rpc();
 
         const account = await program.account.senderAccount.fetch(senderPDA);
-        expect(account.amount.toNumber()).to.equal(10**9);
+        expect(account.amount[0].toNumber()).to.equal(10**9);
 
         walletBalance = await provider.connection.getBalance(wallet.publicKey);
         senderPDABalance = await provider.connection.getBalance(senderPDA);
         receiverPDABalance = await provider.connection.getBalance(receiverPDA);
         approverPDABalance = await provider.connection.getBalance(approverPDA);
+
+        console.log(account.timestamp[0].toNumber())
 
         console.log("\n\t------- AFTER TX -------");
         console.log("\tWallet balance: " + format(walletBalance));
@@ -80,7 +82,7 @@ describe("EscrowProgram", () => {
         );
 
         await program.methods
-            .approveEscrow(true)
+            .approveEscrow(true, 0)
             .accounts({ sender: wallet.publicKey, receiver: to.publicKey, approver: approver.publicKey })
             .signers([ approver ])
             .rpc();

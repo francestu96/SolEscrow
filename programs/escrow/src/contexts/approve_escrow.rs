@@ -1,4 +1,4 @@
-use crate::states::{ReceiverAccount, SenderAccount, ApproverAccount};
+use crate::states::{SenderAccount, ReceiverAccount, ApproverAccount};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
