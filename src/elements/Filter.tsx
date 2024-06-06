@@ -17,52 +17,52 @@ const Filter = ({ received, sent, setFilteredReceived, setFilteredSent, certify=
   const [inputFromAddress, setInputFromAddress] = useState<string>("");
   const [inputToAddress, setInputToAddress] = useState<string>("");
 
-  const filter = () => {
-    const filteredReceived = received.filter(x =>
-      (inputText ? x.data?.toLowerCase().includes(inputText.toLowerCase()) : true) &&
-      (inputDateFrom ? new Date(inputDateFrom).getTime() <= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
-      (inputDateTo ? new Date(inputDateTo).getTime() >= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
-      (inputFromAddress ? x.topics[1] == "0x" + inputFromAddress?.substring(2).padStart(64, '0').toLowerCase() : true) &&
-      (inputToAddress ? x.topics[2] == "0x" + inputToAddress?.substring(2).padStart(64, '0').toLowerCase() : true)
-    )
+//   const filter = () => {
+//     const filteredReceived = received.filter(x =>
+//       (inputText ? x.data?.toLowerCase().includes(inputText.toLowerCase()) : true) &&
+//       (inputDateFrom ? new Date(inputDateFrom).getTime() <= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
+//       (inputDateTo ? new Date(inputDateTo).getTime() >= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
+//       (inputFromAddress ? x.topics[1] == "0x" + inputFromAddress?.substring(2).padStart(64, '0').toLowerCase() : true) &&
+//       (inputToAddress ? x.topics[2] == "0x" + inputToAddress?.substring(2).padStart(64, '0').toLowerCase() : true)
+//     )
 
-    const sentReceived = sent.filter(x =>
-      (inputText ? x.data?.toLowerCase().includes(inputText.toLowerCase()) : true) &&
-      (inputDateFrom ? new Date(inputDateFrom).getTime() <= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
-      (inputDateTo ? new Date(inputDateTo).getTime() >= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
-      (inputFromAddress ? x.topics[1] == "0x" + inputFromAddress?.substring(2).padStart(64, '0').toLowerCase() : true) &&
-      (inputToAddress ? x.topics[2] == "0x" + inputToAddress?.substring(2).padStart(64, '0').toLowerCase() : true)
-    )
+//     const sentReceived = sent.filter(x =>
+//       (inputText ? x.data?.toLowerCase().includes(inputText.toLowerCase()) : true) &&
+//       (inputDateFrom ? new Date(inputDateFrom).getTime() <= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
+//       (inputDateTo ? new Date(inputDateTo).getTime() >= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
+//       (inputFromAddress ? x.topics[1] == "0x" + inputFromAddress?.substring(2).padStart(64, '0').toLowerCase() : true) &&
+//       (inputToAddress ? x.topics[2] == "0x" + inputToAddress?.substring(2).padStart(64, '0').toLowerCase() : true)
+//     )
 
-    setFilteredReceived(filteredReceived);
-    setFilteredSent(sentReceived);
+//     setFilteredReceived(filteredReceived);
+//     setFilteredSent(sentReceived);
 
-    if(certify && setFilteredCertify){
-        const filteredCertify = sent.filter(x =>
-            (inputText ? x.data?.toLowerCase().includes(inputText.toLowerCase()) : true) &&
-            (inputDateFrom ? new Date(inputDateFrom).getTime() <= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
-            (inputDateTo ? new Date(inputDateTo).getTime() >= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
-            (inputFromAddress ? x.topics[1] == "0x" + inputFromAddress?.substring(2).padStart(64, '0').toLowerCase() : true) &&
-            (inputToAddress ? x.topics[2] == "0x" + inputToAddress?.substring(2).padStart(64, '0').toLowerCase() : true)
-        )
-        setFilteredCertify(filteredCertify);
-    }
-  }
+//     if(certify && setFilteredCertify){
+//         const filteredCertify = sent.filter(x =>
+//             (inputText ? x.data?.toLowerCase().includes(inputText.toLowerCase()) : true) &&
+//             (inputDateFrom ? new Date(inputDateFrom).getTime() <= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
+//             (inputDateTo ? new Date(inputDateTo).getTime() >= new Date(parseInt(x.timeStamp, 16) * 1000).getTime() : true) &&
+//             (inputFromAddress ? x.topics[1] == "0x" + inputFromAddress?.substring(2).padStart(64, '0').toLowerCase() : true) &&
+//             (inputToAddress ? x.topics[2] == "0x" + inputToAddress?.substring(2).padStart(64, '0').toLowerCase() : true)
+//         )
+//         setFilteredCertify(filteredCertify);
+//     }
+//   }
 
-  const clear = () => {
-    setInputText("");
-    setInputDateFrom("");
-    setInputDateTo("");
-    setInputFromAddress("");
-    setInputToAddress("");
+//   const clear = () => {
+//     setInputText("");
+//     setInputDateFrom("");
+//     setInputDateTo("");
+//     setInputFromAddress("");
+//     setInputToAddress("");
 
-    setFilteredReceived(received);
-    setFilteredSent(sent);
-  }
+//     setFilteredReceived(received);
+//     setFilteredSent(sent);
+//   }
 
   return (
     <>
-      <Tooltip label="Cooming soon!" hasArrow isDisabled={!disabled}>
+      {/* <Tooltip label="Cooming soon!" hasArrow isDisabled={!disabled}>
         <Button isDisabled={disabled} onClick={() => setShow(!show)} color={show ? "gray.800" : "white"} backgroundColor={show ? "gray.200" : bgColor} _hover={show ? { bg: "gray.300" } : { bg: hoverBgColor }} rightIcon={show ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />} w="full" height="2rem">{show ? "Collapse Filter" : "Expand Filter"}</Button>
       </Tooltip>
       <Collapse in={show} style={{ width: "inherit" }} animateOpacity>
@@ -96,7 +96,7 @@ const Filter = ({ received, sent, setFilteredReceived, setFilteredSent, certify=
             Clear
           </Button>
         </HStack>
-      </Collapse>
+      </Collapse> */}
     </>
   )
 }

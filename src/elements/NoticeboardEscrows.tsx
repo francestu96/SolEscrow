@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { FaRegFaceMehBlank } from 'react-icons/fa6';
 import { EscrowModel } from 'utils/EscrowModel'
 import Filter from './Filter';
-import { getEscrowTxs } from 'utils/getEscrowTxs';
 
 const NoticeboardEscrows = () => {
   const toast = useToast();
@@ -22,39 +21,39 @@ const NoticeboardEscrows = () => {
   const [filteredSentMessages, setFilteredSentMessages] = useState<EscrowModel[]>();
 
   const search = async () => {
-    if(!inputAddress){
-      setAddressError(true);
-      toast({description: "Missing address", status: 'error', position: "top", isClosable: true, duration: 3000})
-      return;
-    }
-    if(!/^0x[a-fA-F0-9]{40}$/gm.test(inputAddress)){
-      setAddressError(true);
-      toast({description: "Invalid recipient address", status: 'error', position: "top", isClosable: true, duration: 3000})
-      return;
-    }
+    // if(!inputAddress){
+    //   setAddressError(true);
+    //   toast({description: "Missing address", status: 'error', position: "top", isClosable: true, duration: 3000})
+    //   return;
+    // }
+    // if(!/^0x[a-fA-F0-9]{40}$/gm.test(inputAddress)){
+    //   setAddressError(true);
+    //   toast({description: "Invalid recipient address", status: 'error', position: "top", isClosable: true, duration: 3000})
+    //   return;
+    // }
 
-    setHasSearched(true)
-    setIsLoading(true);
-    try{
-      const escrows = await getEscrowTxs(inputAddress);
+    // setHasSearched(true)
+    // setIsLoading(true);
+    // try{
+    //   const escrows = await getEscrowTxs(inputAddress);
       
-      let received = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[2]) == parseInt(inputAddress));
-      let sent = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(inputAddress));
-      let certify = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[3]) == parseInt(inputAddress));
+    //   let received = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[2]) == parseInt(inputAddress));
+    //   let sent = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(inputAddress));
+    //   let certify = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[3]) == parseInt(inputAddress));
 
-      setReceivedMessages(received);
-      setSentMessages(sent);
-      setCertifyMessages(certify);
-      setFilteredReceivedMessages(received);
-      setFilteredSentMessages(sent);
-      setFilteredCertifyMessages(certify);
+    //   setReceivedMessages(received);
+    //   setSentMessages(sent);
+    //   setCertifyMessages(certify);
+    //   setFilteredReceivedMessages(received);
+    //   setFilteredSentMessages(sent);
+    //   setFilteredCertifyMessages(certify);
       
-      setIsLoading(false);
-    }
-    catch (err: any){
-      setIsLoading(false);
-      toast({description: err.toString(), status: 'error', position: "top", isClosable: true, duration: 3000});
-    }
+    //   setIsLoading(false);
+    // }
+    // catch (err: any){
+    //   setIsLoading(false);
+    //   toast({description: err.toString(), status: 'error', position: "top", isClosable: true, duration: 3000});
+    // }
 
   }
   return (
@@ -91,8 +90,8 @@ const NoticeboardEscrows = () => {
                           </Box>
                         ))}
                       </Box>
-                    ) : (
-                      <EscrowList escrows={filteredReceivedMessages || []} sent={false} web3button={false} releaseButton={false}/>
+                    ) : (<></>
+                    //   <EscrowList escrows={filteredReceivedMessages || []} sent={false} web3button={false} releaseButton={false}/>
                     )
                   }
                 </TabPanel>
@@ -105,8 +104,8 @@ const NoticeboardEscrows = () => {
                           </Box>
                         ))}
                       </Box>
-                    ) : (
-                      <EscrowList escrows={filteredSentMessages || []} sent={true} web3button={false} releaseButton={false}/>
+                    ) : (<></>
+                    //   <EscrowList escrows={filteredSentMessages || []} sent={true} web3button={false} releaseButton={false}/>
                     )
                   }
                 </TabPanel>
@@ -119,8 +118,8 @@ const NoticeboardEscrows = () => {
                           </Box>
                         ))}
                       </Box>
-                    ) : (
-                      <EscrowList escrows={filteredCertifyMessages || []} sent={false} web3button={false} releaseButton={false}/>
+                    ) : (<></>
+                    //   <EscrowList escrows={filteredCertifyMessages || []} sent={false} web3button={false} releaseButton={false}/>
                     )
                   }
                 </TabPanel>
