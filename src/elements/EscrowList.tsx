@@ -1,15 +1,15 @@
 import { Box, Card, CardBody, CardFooter, Button, CardHeader, HStack, Link, Spinner, Stack, Text, Tooltip, VStack, useColorMode, useToast } from "@chakra-ui/react";
 import { AnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { EscrowModel } from "src/utils/EscrowModel";
+import { EscrowModel } from "utils/EscrowModel";
 import { PiProhibitInset } from "react-icons/pi";
 import { BN, Program } from "@coral-xyz/anchor";
-import { Escrow } from "target/types/escrow";
 import { FaEthereum } from "react-icons/fa";
 import { PublicKey } from '@solana/web3.js';
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import Countdown from "react-countdown";
+import { Escrow } from "utils/escrow";
 import { useState } from "react";
 
 const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet, program }: { escrows: EscrowModel | null | undefined, sent: boolean, approved: boolean, web3button: boolean, releaseButton: boolean, wallet: AnchorWallet, program: Program<Escrow> }) => {

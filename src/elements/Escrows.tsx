@@ -2,17 +2,17 @@ import { Box, HStack, Input, InputGroup, InputLeftElement, VStack, Image, Headin
 import { useAnchorWallet, useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { EscrowModel } from 'src/utils/EscrowModel'
+import { EscrowModel } from 'utils/EscrowModel'
 import { FaRegAddressBook } from 'react-icons/fa';
 import { BsCurrencyDollar } from 'react-icons/bs';
-import { Escrow } from 'target/types/escrow';
-import idl from 'target/idl/escrow.json'; 
 import { MdContactless } from 'react-icons/md';
 import { useEffect, useState } from 'react';
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey } from '@solana/web3.js';
 import { MdPercent } from "react-icons/md";
 import EscrowList from './EscrowList';
+import { Escrow } from 'utils/escrow';
+import idl from 'utils/escrow.json'; 
 import Filter from './Filter';
 
 const Escrows = () => {

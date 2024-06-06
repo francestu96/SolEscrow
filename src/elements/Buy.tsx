@@ -1,5 +1,5 @@
 import { Flex, Stack, Text, VStack, useBreakpointValue } from "@chakra-ui/react";
-import AppConfig from 'app.config'
+import AppConfig from '../../app.config'
 
 const Buy = () => {
     const frameH = useBreakpointValue({

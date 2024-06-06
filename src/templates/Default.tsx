@@ -1,5 +1,5 @@
-import Header from 'src/elements/Header';
-import Footer from 'src/elements/Footer';
+import Header from 'elements/Header';
+import Footer from 'elements/Footer';
 import { FC, ReactNode } from 'react';
 import Head from 'next/head';
 

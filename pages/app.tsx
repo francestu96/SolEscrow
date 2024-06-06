@@ -1,6 +1,6 @@
-import Default from 'src/templates/Default';
+import Default from 'templates/Default';
 import type { NextPage } from 'next';
-import App from 'src/templates/App';
+import App from 'templates/App';
 
 const AppPage: NextPage = () => {
   return (

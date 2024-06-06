@@ -1,6 +1,6 @@
-import Default from 'src/templates/Default';
-import Home from 'src/templates/Home';
+import Default from 'templates/Default';
 import type { NextPage } from 'next';
+import Home from 'templates/Home';
 
 const HomePage: NextPage = () => {
   return (

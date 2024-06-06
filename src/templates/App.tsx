@@ -1,7 +1,7 @@
 import { Container, Tab, TabList, TabPanel, TabPanels, Tabs, chakra, shouldForwardProp, useColorModeValue } from '@chakra-ui/react';
-import NoticeboardEscrows from 'src/elements/NoticeboardEscrows';
+import NoticeboardEscrows from 'elements/NoticeboardEscrows';
 import { motion, isValidMotionProp} from 'framer-motion';
-import Escrows from 'src/elements/Escrows';
+import Escrows from 'elements/Escrows';
 import { FC } from 'react';
 
 const App: FC = () => {

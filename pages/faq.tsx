@@ -1,5 +1,5 @@
-import Default from 'src/templates/Default';
-import FAQ from 'src/templates/FAQ';
+import Default from 'templates/Default';
+import FAQ from 'templates/FAQ';
 import { NextPage } from 'next';
 
 const FaqPage: NextPage = () => {
