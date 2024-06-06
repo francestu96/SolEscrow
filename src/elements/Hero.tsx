@@ -9,7 +9,7 @@ const Hero = () => {
     shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
   })
   return (
-    <Container maxWidth="unset" p="10" minH="88vh" display="flex" background="linear-gradient(0.4turn, #833ab4, #fd1d1d, #fcb045);" backgroundSize="cover" justifyContent="center">
+    <Container maxWidth="unset" p="10" minH="88vh" display="flex" background="linear-gradient(0.1turn, #9945FF, #14F195);" backgroundSize="cover" justifyContent="center">
         <VStack width={["100%", "80%", "50%"]} justifyContent="center">
             <ChakraBox backgroundColor="rgb(23,25,35,0.8)" borderWidth="thin" borderRadius="3xl" p="5" mb="5" fontFamily="Satoshi-Bold" animate={{opacity: [0, 1], filter: ["blur(12px)", "blur(0px)"] }} transition={{duration: "1.5", ease: "easeInOut", delay: "0.5"}} opacity="0">
                 <Text fontSize={["4xl", "6xl", "8xl"]} background="linear-gradient(to right, white, #FF001E);" fill="transparent" backgroundClip="text">SolEscrow</Text>

@@ -1,5 +1,6 @@
 import { Box, HStack, Input, InputGroup, InputLeftElement, VStack, Image, Heading, useColorMode, Tooltip, Tab, TabList, TabPanel, TabPanels, Tabs, Textarea, useToast, InputRightElement, Link, Button } from '@chakra-ui/react';
 import { useAnchorWallet, useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { Escrow } from '../../target/types/escrow';
 import { FaRegAddressBook } from 'react-icons/fa';
@@ -9,11 +10,10 @@ import { MdContactless } from 'react-icons/md';
 import { EscrowModel } from 'utils/EscrowModel'
 import { useEffect, useState } from 'react';
 import * as anchor from "@coral-xyz/anchor";
-import { AnchorProvider, Program } from "@coral-xyz/anchor";
+import { PublicKey } from '@solana/web3.js';
 import { MdPercent } from "react-icons/md";
 import EscrowList from './EscrowList';
 import Filter from './Filter';
-import { PublicKey } from '@solana/web3.js';
 
 const Escrows = () => {
   const toast = useToast();
@@ -54,9 +54,9 @@ const Escrows = () => {
       program.programId
     );
 
-    const sent = await program.account.senderAccount.fetchNullable(senderPDA)
-    const received = await program.account.receiverAccount.fetchNullable(receiverPDA)
-    const approved = await program.account.approverAccount.fetchNullable(approverPDA)
+    const sent = await program.account.senderAccount.fetchNullable(senderPDA);
+    const received = await program.account.receiverAccount.fetchNullable(receiverPDA);
+    const approved = await program.account.approverAccount.fetchNullable(approverPDA);
 
     setSentMessages(sent);
     setReceivedMessages(received);
@@ -137,7 +137,7 @@ const Escrows = () => {
           signature: txId
         });
 
-        toast({description: "Transaction success", status: 'info', position: "bottom-right", isClosable: true, duration: 3000})
+        toast({description: "Transaction success", status: 'info', position: "bottom-right", isClosable: true, duration: 3000});
 
         setIsButtonLoading(false);
         setIsLoading(true);
