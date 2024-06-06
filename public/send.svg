@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 808.93 444.89">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        font-family: Satoshi-Bold, Satoshi;
+        font-size: 69px;
+        font-weight: 700;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        fill: #00a992;
+        stroke: #00a992;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-5, .cls-6, .cls-7, .cls-8 {
+        fill: #333132;
+      }
+
+      .cls-6 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-9, .cls-7 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-10 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <rect class="cls-4" x=".5" y=".5" width="807.93" height="368.38" rx="55.17" ry="55.17"/>
+  <path class="cls-4" d="m808.43,234.17v198.17c0,10.75-13.03,16.1-20.58,8.46l-195.91-198.17c-7.51-7.6-2.13-20.49,8.55-20.49h195.91c6.64,0,12.03,5.39,12.03,12.03Z"/>
+  <text class="cls-2" transform="translate(123.99 125.24)"><tspan class="cls-1" x="0" y="0">Send the </tspan><tspan class="cls-8" x="302.42" y="0">message</tspan><tspan class="cls-1"><tspan x="31.95" y="82.8">and </tspan><tspan class="cls-9" x="171.74" y="82.8">w</tspan><tspan class="cls-3" x="225.08" y="82.8">ait </tspan><tspan class="cls-10" x="322.09" y="82.8">f</tspan><tspan x="344.44" y="82.8">or the </tspan></tspan><tspan class="cls-6" x="43.44" y="165.6">r</tspan><tspan class="cls-8" x="69.38" y="165.6">ecei</tspan><tspan class="cls-7" x="201.3" y="165.6">v</tspan><tspan class="cls-5" x="236.63" y="165.6">er </tspan><tspan class="cls-1" x="320.81" y="165.6">action!</tspan></text>
+</svg>

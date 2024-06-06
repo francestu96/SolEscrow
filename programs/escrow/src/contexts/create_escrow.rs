@@ -11,25 +11,25 @@ pub struct CreateEscrow<'info> {
         payer = sender,
         space = (size_of::<SenderAccount>() + 256) * 10
     )]
-    pub sender_pda: Account<'info, SenderAccount>,
+    pub sender_pda: Box<Account<'info, SenderAccount>>,
 
     #[account(
-        init,
+        init_if_needed,
         seeds = [b"escrow_received".as_ref(), receiver.key().as_ref()],
         bump,
         payer = sender,
         space = (size_of::<ReceiverAccount>() + 256) * 10
     )]
-    pub receiver_pda: Account<'info, ReceiverAccount>,
+    pub receiver_pda: Box<Account<'info, ReceiverAccount>>,
 
     #[account(
-        init,
+        init_if_needed,
         seeds = [b"escrow_approved".as_ref(), approver.key().as_ref()],
         bump,
         payer = sender,
         space = (size_of::<ApproverAccount>() + 256) * 10
     )]
-    pub approver_pda: Account<'info, ApproverAccount>,
+    pub approver_pda: Box<Account<'info, ApproverAccount>>,
     
     #[account(mut)]
     pub sender: Signer<'info>,

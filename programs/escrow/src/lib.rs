@@ -10,15 +10,13 @@ use contexts::*;
 mod states;
 use states::*;
 
-declare_id!("33CTmeovXMHmqHb45KiaL73m4jVqVQCbzjCm27TFboZx");
-
-const OWNER: &str = "VvXCAgwD5hpAs2Mwne5zoCxjD13f1e9exvpquNtF1e6";
+declare_id!("3pRPkw3RvV5LVAynwbx6pnZKgt1e5GvD7q3wQPM7XKSU");
 
 #[program]
 pub mod escrow {
     use super::*;
 
-    static mut RELEASE_TIME: u32 = 604800;
+    const RELEASE_TIME: u32 = 2592000;
 
     pub fn create_escrow(ctx: Context<CreateEscrow>, amount: u64, approver_perc_fees: u8, message: String) -> Result<()> {
         let fees: u64 = amount * (approver_perc_fees as u64) / 100;
@@ -111,11 +109,13 @@ pub mod escrow {
         let fees: u64 = sender_pda.amount[escrow_i as usize] * (sender_pda.approver_perc_fees[escrow_i as usize] as u64) / 100;
         let amount_to_transfer: u64 = sender_pda.amount[escrow_i as usize] - fees;
         
-        unsafe {
-            if ((Clock::get()?.unix_timestamp - sender_pda.timestamp[escrow_i as usize]) as u32) < RELEASE_TIME {
-                return err!(Errors::RelaseTime);
-            }
+        if ((Clock::get()?.unix_timestamp - sender_pda.timestamp[escrow_i as usize]) as u32) < RELEASE_TIME {
+            return err!(Errors::RelaseTime);
         }
+
+        sender_pda.status[escrow_i as usize] = 3;
+        receiver_pda.status[escrow_i as usize] = 3;
+        approver_pda.status[escrow_i as usize] = 3;
 
         receiver_pda.sub_lamports(amount_to_transfer)?;
         ctx.accounts.sender.add_lamports(amount_to_transfer)?;
@@ -125,23 +125,4 @@ pub mod escrow {
 
         Ok(())
     }
-
-    #[access_control(check(&ctx))]
-    pub fn set_release_time(ctx: Context<OnlyOwner>, release_time: u32) -> Result<()> {
-        unsafe {
-            RELEASE_TIME = release_time;
-        }
-        Ok(())
-    }
-}
-
-fn check(ctx: &Context<OnlyOwner>) -> Result<()> {
-    // Check if signer === owner
-    require_keys_eq!(
-        ctx.accounts.signer_account.key(),
-        OWNER.parse::<Pubkey>().unwrap(),
-        Errors::NotOwner
-    );
-
-    Ok(())
 }

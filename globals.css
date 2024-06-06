@@ -1,0 +1,47 @@
+@keyframes pulse{
+    50% { opacity: .3; }
+}
+
+@font-face {
+    font-family: 'Satoshi-Bold';
+    src: url('/fonts/Satoshi-Bold.otf');
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi.otf');
+}
+
+html {
+    scroll-behavior: smooth !important;
+}
+
+.icons{
+    font-size: 20px;
+}
+
+@media only screen and (min-width: 600px) {
+    .icons {
+        font-size: 20px;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .icons {
+        font-size: 25px;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .icons {
+        font-size: 30px;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .icons {
+        font-size: 35px;
+    }
+}

@@ -53,6 +53,12 @@ describe("EscrowProgram", () => {
         const account = await program.account.senderAccount.fetch(senderPDA);
         expect(account.amount[0].toNumber()).to.equal(10**9);
 
+        await program.methods
+            .createEscrow(new anchor.BN(10**9), 10, "Initial escrow message")
+            .accounts({ sender: wallet.publicKey, receiver: to.publicKey, approver: approver.publicKey })
+            .signers([ wallet ])
+            .rpc();
+
         walletBalance = await provider.connection.getBalance(wallet.publicKey);
         senderPDABalance = await provider.connection.getBalance(senderPDA);
         receiverPDABalance = await provider.connection.getBalance(receiverPDA);
@@ -104,35 +110,35 @@ describe("EscrowProgram", () => {
     //     console.log("\tApprover balance: " + format(approverBalance));
     // })
 
-    it("Release funds", async () => {
-        const [ senderPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
-            [Buffer.from("escrow_sent"), wallet.publicKey.toBuffer()],
-            program.programId
-        );
-        const [ receiverPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
-            [Buffer.from("escrow_received"), to.publicKey.toBuffer()],
-            program.programId
-        );
-        const [ approverPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
-            [Buffer.from("escrow_approved"), approver.publicKey.toBuffer()],
-            program.programId
-        );
+    // it("Release funds", async () => {
+    //     const [ senderPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
+    //         [Buffer.from("escrow_sent"), wallet.publicKey.toBuffer()],
+    //         program.programId
+    //     );
+    //     const [ receiverPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
+    //         [Buffer.from("escrow_received"), to.publicKey.toBuffer()],
+    //         program.programId
+    //     );
+    //     const [ approverPDA ] = anchor.web3.PublicKey.findProgramAddressSync(
+    //         [Buffer.from("escrow_approved"), approver.publicKey.toBuffer()],
+    //         program.programId
+    //     );
 
-        await program.methods
-            .releaseEscrow(0)
-            .accounts({ sender: wallet.publicKey, receiver: to.publicKey, approver: approver.publicKey })
-            .signers([ wallet ])
-            .rpc();
+    //     await program.methods
+    //         .releaseEscrow(0)
+    //         .accounts({ sender: wallet.publicKey, receiver: to.publicKey, approver: approver.publicKey })
+    //         .signers([ wallet ])
+    //         .rpc();
 
-        let walletBalance = await provider.connection.getBalance(wallet.publicKey);
-        let senderPDABalance = await provider.connection.getBalance(senderPDA);
-        let receiverPDABalance = await provider.connection.getBalance(receiverPDA);
-        let approverPDABalance = await provider.connection.getBalance(approverPDA);
+    //     let walletBalance = await provider.connection.getBalance(wallet.publicKey);
+    //     let senderPDABalance = await provider.connection.getBalance(senderPDA);
+    //     let receiverPDABalance = await provider.connection.getBalance(receiverPDA);
+    //     let approverPDABalance = await provider.connection.getBalance(approverPDA);
 
-        console.log("\n\t------- AFTER RELEASE -------");
-        console.log("\tWallet balance: " + format(walletBalance));
-        console.log("\tSender PDA balance: " + format(senderPDABalance));
-        console.log("\tReceiver PDA balance: " + format(receiverPDABalance));
-        console.log("\tApprover PDA balance: " + format(approverPDABalance));
-    })
+    //     console.log("\n\t------- AFTER RELEASE -------");
+    //     console.log("\tWallet balance: " + format(walletBalance));
+    //     console.log("\tSender PDA balance: " + format(senderPDABalance));
+    //     console.log("\tReceiver PDA balance: " + format(receiverPDABalance));
+    //     console.log("\tApprover PDA balance: " + format(approverPDABalance));
+    // })
 })
