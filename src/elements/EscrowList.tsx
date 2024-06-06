@@ -1,14 +1,12 @@
 import { Box, Card, CardBody, CardFooter, Button, CardHeader, HStack, Link, Spinner, Stack, Text, Tooltip, VStack, useColorMode, useToast } from "@chakra-ui/react";
 import { AnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Escrow } from "../../target/types/escrow";
+import { EscrowModel } from "src/utils/EscrowModel";
 import { PiProhibitInset } from "react-icons/pi";
-import { EscrowModel } from "utils/EscrowModel";
 import { BN, Program } from "@coral-xyz/anchor";
+import { Escrow } from "target/types/escrow";
 import { FaEthereum } from "react-icons/fa";
 import { PublicKey } from '@solana/web3.js';
-import * as anchor from "@coral-xyz/anchor";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import Countdown from "react-countdown";
@@ -293,6 +291,7 @@ const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet
                       onClick={() => releaseEscrow(index, escrows.receiver![index], escrows.approver![index], escrows.status)}
                       _disabled={{backgroundColor: checkReleaseTime(escrows.timestamp[index]) != 0 ? "#C53030" : (colorMode == "dark" ? "lawngreen" : "green"), cursor: "not-allowed"}}
                       isDisabled={checkReleaseTime(escrows.timestamp[index]) != 0} 
+                      isLoading={isReleaseLoading}
                       style = {{ fontSize: "inherit", maxWidth: "50%", maxHeight: "2.5rem", color: colorMode == "dark" ? "#171923" : "white", backgroundColor: checkReleaseTime(escrows.timestamp[index]) != 0 ? "#C53030" : (colorMode == "dark" ? "lawngreen" : "green") }}
                     >
                       <HStack justifyContent="space-between" width={checkReleaseTime(escrows.timestamp[index]) == 0 ? "80%" : "100%"} px="2">

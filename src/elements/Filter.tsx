@@ -4,7 +4,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { FiFilter } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
-import { EscrowModel } from "utils/EscrowModel"
+import { EscrowModel } from "src/utils/EscrowModel"
 
 const Filter = ({ received, sent, setFilteredReceived, setFilteredSent, certify=undefined, setFilteredCertify=undefined, disabled=false }: { received: EscrowModel[], sent: EscrowModel[], setFilteredReceived: Dispatch<SetStateAction<EscrowModel[] | undefined>>, setFilteredSent: Dispatch<SetStateAction<EscrowModel[] | undefined>>, certify?: EscrowModel[] | undefined, setFilteredCertify?: Dispatch<SetStateAction<EscrowModel[] | undefined>> | undefined, disabled?: boolean }) => {
   const [show, setShow] = useState(false);

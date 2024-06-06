@@ -1,7 +1,7 @@
+import Header from 'src/elements/Header';
+import Footer from 'src/elements/Footer';
 import { FC, ReactNode } from 'react';
 import Head from 'next/head';
-import Header from 'elements/Header';
-import Footer from 'elements/Footer';
 
 const Default: FC<{ children: ReactNode; pageName: string }> = ({ children, pageName }) => (
   <>

@@ -1,9 +1,9 @@
+import Tokenomics from 'src/elements/Tokenomics';
+import Roadmap from 'src/elements/Roadmap';
 import { VStack } from '@chakra-ui/react';
-import About from 'elements/About';
-import Buy from 'elements/Buy';
-import Hero from 'elements/Hero';
-import Roadmap from 'elements/Roadmap';
-import Tokenomics from 'elements/Tokenomics';
+import About from 'src/elements/About';
+import Hero from 'src/elements/Hero';
+import Buy from 'src/elements/Buy';
 import { FC } from 'react';
 
 const Home: FC = () => {

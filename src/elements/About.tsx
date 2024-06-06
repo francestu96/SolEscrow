@@ -1,8 +1,7 @@
 import { chakra, shouldForwardProp, VStack,Text, Image, Heading, Center, Stack, Button, Link } from '@chakra-ui/react';
 import { motion, isValidMotionProp, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import dynamic from "next/dynamic";
 import { FaBookOpen } from "react-icons/fa";
+import { useRef } from 'react';
 
 const About = () => {
   const ref = useRef(null);

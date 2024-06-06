@@ -1,9 +1,9 @@
 import { Box, Button, HStack, Heading, Input, InputGroup, InputLeftElement, Tab, TabList, TabPanel, TabPanels, Tabs, Tooltip, VStack, useColorMode, useToast } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import EscrowList from 'elements/EscrowList';
+import EscrowList from 'src/elements/EscrowList';
 import { useState } from 'react';
 import { FaRegFaceMehBlank } from 'react-icons/fa6';
-import { EscrowModel } from 'utils/EscrowModel'
+import { EscrowModel } from 'src/utils/EscrowModel'
 import Filter from './Filter';
 
 const NoticeboardEscrows = () => {
