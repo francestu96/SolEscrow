@@ -103,7 +103,7 @@ const Card = ({ id, title, description, date }: CardProps) => {
                 content: `""`,
                 w: '0',
                 h: '0',
-                borderColor: `transparent #FF001E`,
+                borderColor: `transparent rgb(132 95 239)`,
                 borderStyle: 'solid',
                 borderWidth: borderWidthValue,
                 position: 'absolute',

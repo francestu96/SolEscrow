@@ -25,19 +25,19 @@ const Tokenomics = () => {
             <Stack ref={ref} direction={["column", "row"]} alignItems="center" gap="20" >
                 <SimpleGrid columns={2}>
                     <ChakraBox animate={isInView ? { translateX: [-200, 0], opacity: [0, 1] } : 'none'} transition={{ duration: "1.5", ease: "easeInOut", delay: "0.5" }} opacity="0">
-                        <VStack borderBottom="1px solid #FF001E" borderRight="1px solid #FF001E" pr="10" pb="10">
+                        <VStack borderBottom="1px solid rgb(132 95 239)" borderRight="1px solid rgb(132 95 239)" pr="10" pb="10">
                             <Text fontFamily="Satoshi-bold" color="main" fontSize={["2xl", "4xl"]}><CountUp useEasing={false} end={100} duration={5} start={50} suffix=" M"/></Text>
                             <Text color="gray.500" fontWeight="bold" fontSize="lg">Supply</Text>
                         </VStack>
                     </ChakraBox>
                     <ChakraBox animate={isInView ? { translateX: [-200, 0], opacity: [0, 1] } : 'none'} transition={{ duration: "1.5", ease: "easeInOut" }} opacity="0">
-                        <VStack borderBottom="1px solid #FF001E" pl="10" pb="10">
+                        <VStack borderBottom="1px solid rgb(132 95 239)" pl="10" pb="10">
                             <Text fontFamily="Satoshi-bold" color="main" fontSize={["2xl", "4xl"]}>Locked</Text>
                             <Text color="gray.500" fontWeight="bold" fontSize="lg">Liquidity</Text>
                         </VStack>
                     </ChakraBox>
                     <ChakraBox animate={isInView ? { translateX: [-200, 0], opacity: [0, 1] } : 'none'} transition={{ duration: "1.5", ease: "easeInOut", delay: "0.6"}} opacity="0">
-                        <VStack borderRight="1px solid #FF001E" pr="10" pt="10">
+                        <VStack borderRight="1px solid rgb(132 95 239)" pr="10" pt="10">
                             <Text fontFamily="Satoshi-bold" color="main" fontSize={["2xl", "4xl"]}>Renounced</Text>
                             <Text color="gray.500" fontWeight="bold" fontSize="lg">Contract Ownership</Text>
                         </VStack>

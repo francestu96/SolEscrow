@@ -181,7 +181,7 @@ const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet
                       >
                         <Tooltip hasArrow label='Approve' bg='gray.300' color='black' placement="top">
                           <span>
-                            <AiOutlineCheckCircle className="icons" style={{ color: "#FF001E" }} />
+                            <AiOutlineCheckCircle className="icons" style={{ color: "rgb(132 95 239)" }} />
                           </span>
                         </Tooltip>
                       </Web3Button>

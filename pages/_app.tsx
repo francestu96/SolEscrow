@@ -17,7 +17,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         useSystemColorMode: false,
     };
     
-    const theme = extendTheme({ config, colors: { "main": "#FF001E" } });
+    const theme = extendTheme({ config, colors: { "main": "rgb(132 95 239)" } });
     
     const network = process.env.NEXT_PUBLIC_APP_CHAIN === "mainnet-beta" ? WalletAdapterNetwork.Mainnet : WalletAdapterNetwork.Devnet;
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
