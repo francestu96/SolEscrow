@@ -89,7 +89,7 @@ const Header = () => {
           ))}
         </HStack>
         <HStack gap={'10px'}>
-          <WalletMultiButtonDynamic style={{height: "2.5rem"}}/>
+          <WalletMultiButtonDynamic style={{height: "2.5rem", backgroundColor: "rgb(132 95 239)"}}/>
           <ColorModeButton />
         </HStack>
       </Flex>

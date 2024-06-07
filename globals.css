@@ -19,6 +19,45 @@ html {
     font-size: 20px;
 }
 
+@keyframes animated-hero-border {
+    0% {
+        transform: scale(0);
+    }
+    60% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@-webkit-keyframes animated-hero-border {
+    0% {
+        -webkit-transform: translate(-100%, -100%);
+    }
+    60% {
+        -webkit-transform: translate(-50%, -50%);
+    }
+    100% {
+        -webkit-transform: translate(0%, 0%);
+    }
+}
+
+.animated-hero-border::after {
+    animation-fill-mode: forwards;
+    animation-name: animated-hero-border;
+    animation-duration: 4s;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-name: animated-hero-border;
+    -webkit-animation-duration: 4s;
+    position: absolute;
+    border-radius: 1.5rem;
+    content: "";
+    background: linear-gradient(to bottom, #9945FF, #14F195);
+    width: 100%;
+    height: 100%;
+}
+
 @media only screen and (min-width: 600px) {
     .icons {
         font-size: 20px;

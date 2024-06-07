@@ -58,6 +58,7 @@ const Escrows = () => {
     const received = await program.account.receiverAccount.fetchNullable(receiverPDA);
     const approved = await program.account.approverAccount.fetchNullable(approverPDA);
 
+    console.log(received)
     setSentMessages(sent);
     setReceivedMessages(received);
     setApprovedMessages(approved);
@@ -137,7 +138,7 @@ const Escrows = () => {
           signature: txId
         });
 
-        toast({description: "Transaction success", status: 'info', position: "bottom-right", isClosable: true, duration: 3000});
+        toast({description: "Transaction success", status: 'success', position: "bottom-right", isClosable: true, duration: 3000});
 
         setIsButtonLoading(false);
         setIsLoading(true);

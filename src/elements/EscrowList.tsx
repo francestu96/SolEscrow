@@ -16,16 +16,16 @@ const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet
   const toast = useToast();
   const { colorMode } = useColorMode();
   const { connection } = useConnection();
-  const [isApproveLoading, setIsApproveLoading] = useState(false);
-  const [isDenyLoading, setIsDenyLoading] = useState(false);
-  const [isReleaseLoading, setIsReleaseLoading] = useState(false);
+  const [isApproveLoadingIndex, setIsApproveLoadingIndex] = useState(-1);
+  const [isDenyLoadingIndex, setIsDenyLoadingIndex] = useState(-1);
+  const [isReleaseLoadingIndex, setIsReleaseLoadingIndex] = useState(-1);
 
   const approveEscrow = async (approve: boolean, index: number, escrowSender: PublicKey, escrowReceiver: PublicKey, status: Buffer) => {
     if (approve){
-        setIsApproveLoading(true);
+        setIsApproveLoadingIndex(index);
     }
     else {
-      setIsDenyLoading(true);  
+      setIsDenyLoadingIndex(index);  
     }
 
     try {
@@ -47,16 +47,16 @@ const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet
         signature: txId
       });
 
-      toast({ description: "Transaction success", status: 'info', position: "bottom-right", isClosable: true, duration: 3000 });
+      toast({ description: "Transaction success", status: 'success', position: "bottom-right", isClosable: true, duration: 3000 });
 
       status[index] = approve ? 1 : 2;
 
-      setIsApproveLoading(false);
-      setIsDenyLoading(false);
+      setIsApproveLoadingIndex(-1);
+      setIsDenyLoadingIndex(-1);
     }
     catch (err: any) {
-      setIsApproveLoading(false);
-      setIsDenyLoading(false);
+      setIsApproveLoadingIndex(-1);
+      setIsDenyLoadingIndex(-1);
 
       console.log(err);
       toast({ description: "Transaction rejected", status: 'error', position: "bottom-right", isClosable: true, duration: 3000 });
@@ -64,7 +64,7 @@ const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet
   }
 
   const releaseEscrow = async (index: number, escrowReceiver: PublicKey, escrowApprover: PublicKey, status: Buffer) => {
-    setIsReleaseLoading(true);
+    setIsReleaseLoadingIndex(index);
 
     try {
       const tx = await program.methods
@@ -85,14 +85,14 @@ const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet
         signature: txId
       });
 
-      toast({ description: "Transaction success", status: 'info', position: "bottom-right", isClosable: true, duration: 3000 });
+      toast({ description: "Transaction success", status: 'success', position: "bottom-right", isClosable: true, duration: 3000 });
 
       status[index] = 3;
 
-      setIsReleaseLoading(false);
+      setIsReleaseLoadingIndex(-1);
     }
     catch (err: any) {
-      setIsReleaseLoading(false);
+      setIsReleaseLoadingIndex(-1);
 
       console.log(err);
       toast({ description: "Transaction rejected", status: 'error', position: "bottom-right", isClosable: true, duration: 3000 });
@@ -149,14 +149,14 @@ const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet
                 <Stack direction={["column", "column", "row", "row"]} justifyContent="space-between">
                   <HStack>
                     <HStack display={web3button && escrows.status[index] === 0 ? "flex" : "none"}>
-                      <Button isLoading={isApproveLoading} style={{ padding: "0", minWidth: "unset", background: "transparent" }} onClick={() => approveEscrow(true, index, escrows.sender![index], escrows.receiver![index], escrows.status)}>
+                      <Button isLoading={isApproveLoadingIndex === index} style={{ padding: "0", minWidth: "unset", background: "transparent" }} onClick={() => approveEscrow(true, index, escrows.sender![index], escrows.receiver![index], escrows.status)}>
                         <Tooltip hasArrow label='Approve' bg='gray.300' color='black' placement="top">
                           <span>
                             <AiOutlineCheckCircle style={{ color: "lime", fontSize: "35px" }} />
                           </span>
                         </Tooltip>
                       </Button>
-                      <Button isLoading={isDenyLoading} style={{ padding: "0", minWidth: "unset", background: "transparent" }} onClick={() => approveEscrow(false, index, escrows.sender![index], escrows.receiver![index], escrows.status)}>
+                      <Button isLoading={isDenyLoadingIndex === index} style={{ padding: "0", minWidth: "unset", background: "transparent" }} onClick={() => approveEscrow(false, index, escrows.sender![index], escrows.receiver![index], escrows.status)}>
                         <Tooltip hasArrow label='Deny' bg='gray.300' color='black' placement="top">
                           <span>
                             <PiProhibitInset style={{ color: "red", fontSize: "37px" }} />
@@ -291,7 +291,7 @@ const EscrowList = ({ escrows, sent, approved, web3button, releaseButton, wallet
                       onClick={() => releaseEscrow(index, escrows.receiver![index], escrows.approver![index], escrows.status)}
                       _disabled={{backgroundColor: checkReleaseTime(escrows.timestamp[index]) != 0 ? "#C53030" : (colorMode == "dark" ? "lawngreen" : "green"), cursor: "not-allowed"}}
                       isDisabled={checkReleaseTime(escrows.timestamp[index]) != 0} 
-                      isLoading={isReleaseLoading}
+                      isLoading={isReleaseLoadingIndex === index}
                       style = {{ fontSize: "inherit", maxWidth: "50%", maxHeight: "2.5rem", color: colorMode == "dark" ? "#171923" : "white", backgroundColor: checkReleaseTime(escrows.timestamp[index]) != 0 ? "#C53030" : (colorMode == "dark" ? "lawngreen" : "green") }}
                     >
                       <HStack justifyContent="space-between" width={checkReleaseTime(escrows.timestamp[index]) == 0 ? "80%" : "100%"} px="2">
