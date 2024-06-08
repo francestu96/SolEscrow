@@ -58,7 +58,6 @@ const Escrows = () => {
     const received = await program.account.receiverAccount.fetchNullable(receiverPDA);
     const approved = await program.account.approverAccount.fetchNullable(approverPDA);
 
-    console.log(received)
     setSentMessages(sent);
     setReceivedMessages(received);
     setApprovedMessages(approved);
@@ -207,7 +206,7 @@ const Escrows = () => {
               <Textarea value={inputMessage} onChange={(e) => {setMessageError(false); setInputMessage(e.target.value)}} placeholder="Payment conditions to be verfied..." borderColor={messageError ? "red" : undefined} backgroundColor={colorMode == "dark" ? "gray.800" : "white"}/>
             </VStack>
 
-            {/* <Filter received={receivedMessages || []} sent={sentMessages || []} certify={approvedMessages || []} setFilteredReceived={setFilteredReceivedMessages} setFilteredSent={setFilteredSentMessages} setFilteredCertify={setFilteredApprovedMessages}/> */}
+            <Filter received={receivedMessages} sent={sentMessages} approved={approvedMessages} setFilteredReceived={setFilteredReceivedMessages} setFilteredSent={setFilteredSentMessages} setFilteredApproved={setFilteredApprovedMessages}/>
             <Tabs width="inherit">
               <TabList>
                 <Tab _selected={{color: "main", borderColor: "main"}}>Received</Tab>
