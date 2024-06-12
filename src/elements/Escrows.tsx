@@ -128,6 +128,9 @@ const Escrows = () => {
         tx.recentBlockhash = blockhash;
         tx.feePayer = wallet!.publicKey;
 
+        console.log(wallet)
+        console.log(tx)
+
         const signedTx = await wallet!.signTransaction(tx);
         const txId = await connection.sendRawTransaction(signedTx.serialize());
         
